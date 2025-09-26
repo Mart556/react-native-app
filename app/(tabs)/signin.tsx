@@ -2,16 +2,9 @@ import { useNavigation } from "@react-navigation/native";
 
 import AuthHeader from "@/components/ui/AuthHeader";
 import AuthInput from "@/components/ui/AuthInput";
-
 import GoogleButton from "@/components/ui/GoogleButton";
-import {
-	Alert,
-	Switch as CheckBox,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
+
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { useEffect, useState } from "react";
 
@@ -20,17 +13,16 @@ export default function SignupScreen() {
 
 	useEffect(() => {
 		navigation.setOptions({
-			title: "Sign Up",
-			tabBarLabel: "Sign Up",
+			title: "Sign In",
+			tabBarLabel: "Sign In",
 		});
 	}, [navigation]);
 
 	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	const onSubmit = () => {
-		if (!name || !email || !password) {
+		if (!name || !password) {
 			Alert.alert("Validation", "Please fill all fields");
 			return;
 		}
@@ -38,11 +30,9 @@ export default function SignupScreen() {
 		Alert.alert("Success", `Account created for ${name}`);
 	};
 
-	const [isSelected, setSelection] = useState(false);
-
 	return (
 		<View style={styles.container}>
-			<AuthHeader label='Sign Up' />
+			<AuthHeader label='Sign In' />
 
 			<View style={styles.form}>
 				<AuthInput
@@ -53,15 +43,6 @@ export default function SignupScreen() {
 				/>
 
 				<AuthInput
-					label='Email'
-					value={email}
-					onChangeText={setEmail}
-					placeholder='you@example.com'
-					keyboardType='email-address'
-					autoCapitalize='none'
-				/>
-
-				<AuthInput
 					label='Password'
 					value={password}
 					onChangeText={setPassword}
@@ -69,23 +50,17 @@ export default function SignupScreen() {
 					secureTextEntry={true}
 				/>
 
-				<View style={styles.checkboxContainer}>
-					<CheckBox value={isSelected} onValueChange={setSelection} />
-
-					<Text style={styles.label}>I agree to the terms and conditions</Text>
-				</View>
-
 				<TouchableOpacity style={styles.button} onPress={onSubmit}>
-					<Text style={styles.buttonText}>Sign Up</Text>
+					<Text style={styles.buttonText}>Sign In</Text>
 				</TouchableOpacity>
 			</View>
 
 			<View style={{ flex: 1, alignItems: "center", marginBottom: 30 }}>
-				<Text style={{ flex: 1 }}>Or sign up with</Text>
+				<Text style={{ flex: 1 }}>Or sign in with</Text>
 
 				<GoogleButton />
 
-				<Text style={{ flex: 1 }}>Already have an account? Sign in</Text>
+				<Text style={{ flex: 1 }}>Dont have an account? Sign up</Text>
 			</View>
 		</View>
 	);

@@ -21,7 +21,17 @@
 		"web": {
 			"output": "static"
 		},
-		"plugins": ["expo-router"],
+		"plugins": [
+			"expo-router",
+			[
+				"expo-build-properties",
+				{
+					"android": {
+						"usesCleartextTraffic": true
+					}
+				}
+			]
+		],
 		"experiments": {
 			"typedRoutes": true,
 			"reactCompiler": true

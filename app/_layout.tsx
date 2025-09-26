@@ -1,8 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import React from "react";
-import "react-native-reanimated";
-
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
 import SplashButton from "@/components/ui/splashbutton";
@@ -13,6 +10,8 @@ import {
 	DefaultTheme,
 	ThemeProvider,
 } from "@react-navigation/native";
+
+import SignInScreen from "./(tabs)/signin";
 import Signup from "./(tabs)/signup";
 
 const Stack = createNativeStackNavigator();
@@ -36,7 +35,7 @@ function SplashScreen({ navigation }: { navigation: any }) {
 			<SplashButton
 				title='Log In'
 				backgroundColor='#fff'
-				onPress={() => {}}
+				onPress={() => navigation.navigate("signin")}
 			></SplashButton>
 		</View>
 	);
@@ -55,6 +54,7 @@ export default function RootLayout() {
 			>
 				<Stack.Screen name='splash' component={SplashScreen} />
 				<Stack.Screen name='signup' component={Signup} />
+				<Stack.Screen name='signin' component={SignInScreen} />
 			</Stack.Navigator>
 		</ThemeProvider>
 	);
