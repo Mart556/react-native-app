@@ -2,12 +2,14 @@ import BottomNavigation from "@/components/ui/BottomNavigation";
 import {
 	faBed,
 	faChair,
+	faCouch,
 	faSearch,
 	faStar,
 	faTable,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { router } from "expo-router";
+import React, { useEffect, useState } from "react";
 import {
 	Image,
 	ScrollView,
@@ -18,57 +20,66 @@ import {
 	View,
 } from "react-native";
 
-import { useState } from "react";
+import { useCategories, useProducts } from "@/hooks/useData";
+import DataService, { Category, Product } from "@/services/DataService";
 
-const categories = [
-	{ id: 1, name: "Popular", icon: faStar },
-	{ id: 2, name: "Chair", icon: faChair },
-	{ id: 3, name: "Table", icon: faTable },
-	{ id: 4, name: "Armchair", icon: faChair },
-	{ id: 5, name: "Bed", icon: faBed },
-];
+// Icon mapping function
+const getIconFromName = (iconName: string) => {
+	// Extract the actual icon name from FontAwesome class (e.g., "fa-solid fa-bed" -> "bed")
+	const actualIconName = iconName.split(" ").pop()?.replace("fa-", "") || "";
 
-const products = [
-	{
-		id: 1,
-		name: "Black Simple Lamp",
-		price: "$12.00",
-		image: require("@/assets/images/splash.png"), // Replace with actual product images
-	},
-	{
-		id: 2,
-		name: "Minimal Stand",
-		price: "$25.00",
-		image: require("@/assets/images/splash.png"),
-	},
-	{
-		id: 3,
-		name: "Coffee Chair",
-		price: "$20.00",
-		image: require("@/assets/images/splash.png"),
-	},
-	{
-		id: 4,
-		name: "Simple Desk",
-		price: "$50.00",
-		image: require("@/assets/images/splash.png"),
-	},
-];
+	const iconMap: { [key: string]: any } = {
+		star: faStar,
+		chair: faChair,
+		table: faTable,
+		bed: faBed,
+		couch: faCouch,
+	};
+	return iconMap[actualIconName.toLowerCase()] || faStar; // Default to star if not found
+};
+
+const loadProductImage = (imageUrl: string) => {
+	return { uri: imageUrl };
+};
 
 export default function Home() {
+	const { products } = useProducts();
+	const { categories } = useCategories();
+	const [filteredProducts, setFilteredProducts] = useState(products);
+
+	// Initialize data on first load
+	useEffect(() => {
+		DataService.initializeData();
+	}, []);
+
+	// Update filtered products when products change
+	useEffect(() => {
+		setFilteredProducts(products);
+	}, [products]);
+
+	const filterProductsBySearch = (inputVal: string) => {
+		if (inputVal.trim() === "") {
+			setFilteredProducts(products);
+		} else {
+			const filtered = products.filter((product) =>
+				product.name.toLowerCase().includes(inputVal.toLowerCase())
+			);
+			setFilteredProducts(filtered);
+		}
+	};
+
 	const handleTabPress = (tab: "home" | "bookmark" | "user") => {
 		if (tab === "home") return;
 		router.push(`/${tab}` as any);
 	};
 
-	const [filteredProducts, setFilteredProducts] = useState(products);
-
-	const filterProductsBySearch = (inputVal: string) => {
-		const filteredProducts = products.filter((product) =>
-			product.name.toLowerCase().includes(inputVal.toLowerCase())
-		);
-
-		setFilteredProducts(filteredProducts);
+	const openProductDetails = (productId: number) => {
+		router.push({
+			pathname: "/product",
+			params: {
+				productId: productId.toString(),
+			},
+		} as any);
 	};
 
 	return (
@@ -90,10 +101,14 @@ export default function Home() {
 				</View>
 
 				<View style={styles.categoriesContainer}>
-					{categories.map((category) => (
+					{categories.map((category: Category) => (
 						<TouchableOpacity key={category.id} style={styles.categoryItem}>
 							<View style={styles.categoryIcon}>
-								<FontAwesomeIcon icon={category.icon} size={24} color='#333' />
+								<FontAwesomeIcon
+									icon={getIconFromName(category.icon)}
+									size={24}
+									color='#333'
+								/>
 							</View>
 							<Text style={styles.categoryText}>{category.name}</Text>
 						</TouchableOpacity>
@@ -101,10 +116,18 @@ export default function Home() {
 				</View>
 
 				<View style={styles.productsGrid}>
-					{filteredProducts.map((product, index) => (
-						<TouchableOpacity key={product.id} style={styles.productCard}>
+					{filteredProducts.map((product: Product, index: number) => (
+						<TouchableOpacity
+							key={product.id}
+							style={styles.productCard}
+							onPress={() => openProductDetails(product.id)}
+						>
 							<View style={styles.productImageContainer}>
-								<Image source={product.image} style={styles.productImage} />
+								<Image
+									source={loadProductImage(product.image)}
+									style={styles.productImage}
+									resizeMode='contain'
+								/>
 							</View>
 							<Text style={styles.productName}>{product.name}</Text>
 							<Text style={styles.productPrice}>{product.price}</Text>

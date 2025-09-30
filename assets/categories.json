@@ -1,0 +1,7 @@
+[
+	{ "id": 1, "name": "Popular", "icon": "fa-solid fa-star" },
+	{ "id": 2, "name": "Chair", "icon": "fa-solid fa-chair" },
+	{ "id": 3, "name": "Table", "icon": "fa-solid fa-table" },
+	{ "id": 4, "name": "Armchair", "icon": "fa-solid fa-chair" },
+	{ "id": 5, "name": "Bed", "icon": "fa-solid fa-bed" }
+]
