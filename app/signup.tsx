@@ -1,41 +1,25 @@
-import { useNavigation } from "@react-navigation/native";
-
 import AuthHeader from "@/components/ui/AuthHeader";
 import AuthInput from "@/components/ui/AuthInput";
-
 import GoogleButton from "@/components/ui/GoogleButton";
-import {
-	Alert,
-	Switch as CheckBox,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { Checkbox } from "expo-checkbox";
 
-import { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+import { router } from "expo-router";
+import { useState } from "react";
 
 export default function SignupScreen() {
-	const navigation = useNavigation();
-
-	useEffect(() => {
-		navigation.setOptions({
-			title: "Sign Up",
-			tabBarLabel: "Sign Up",
-		});
-	}, [navigation]);
-
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	const onSubmit = () => {
-		if (!name || !email || !password) {
+		/* if (!name || !email || !password) {
 			Alert.alert("Validation", "Please fill all fields");
 			return;
-		}
-		// Replace with real submit logic
-		Alert.alert("Success", `Account created for ${name}`);
+		} */
+
+		router.push("/home");
 	};
 
 	const [isSelected, setSelection] = useState(false);
@@ -70,7 +54,11 @@ export default function SignupScreen() {
 				/>
 
 				<View style={styles.checkboxContainer}>
-					<CheckBox value={isSelected} onValueChange={setSelection} />
+					<Checkbox
+						value={isSelected}
+						style={{ marginRight: 8 }}
+						onValueChange={setSelection}
+					/>
 
 					<Text style={styles.label}>I agree to the terms and conditions</Text>
 				</View>

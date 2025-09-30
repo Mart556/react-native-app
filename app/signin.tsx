@@ -1,23 +1,12 @@
-import { useNavigation } from "@react-navigation/native";
-
 import AuthHeader from "@/components/ui/AuthHeader";
 import AuthInput from "@/components/ui/AuthInput";
 import GoogleButton from "@/components/ui/GoogleButton";
 
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function SignupScreen() {
-	const navigation = useNavigation();
-
-	useEffect(() => {
-		navigation.setOptions({
-			title: "Sign In",
-			tabBarLabel: "Sign In",
-		});
-	}, [navigation]);
-
+export default function SignInScreen() {
 	const [name, setName] = useState("");
 	const [password, setPassword] = useState("");
 

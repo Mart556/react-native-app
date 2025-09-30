@@ -29,9 +29,6 @@ importers:
       '@react-native-community/checkbox':
         specifier: ^0.5.20
         version: 0.5.20(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0)
-      '@react-native-google-signin/google-signin':
-        specifier: ^16.0.0
-        version: 16.0.0(expo@54.0.10)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0)
       '@react-navigation/bottom-tabs':
         specifier: ^7.4.0
         version: 7.4.7(@react-navigation/native@7.1.17(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.1(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0)
@@ -50,6 +47,9 @@ importers:
       expo-build-properties:
         specifier: ^1.0.9
         version: 1.0.9(expo@54.0.10)
+      expo-checkbox:
+        specifier: ^5.0.7
+        version: 5.0.7(react-native-web@0.21.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0)
       expo-constants:
         specifier: ~18.0.9
         version: 18.0.9(expo@54.0.10)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))
@@ -1185,16 +1185,6 @@ packages:
       react-native-windows:
         optional: true
 
-  '@react-native-google-signin/google-signin@16.0.0':
-    resolution: {integrity: sha512-jVuzPo8odREekFc0b4RK3YsqCvedtLIM2P6NSszFr9cYyhKrUNikffPapL6LmkL9qkb8K6pDeb5CXg4qALOc0g==}
-    peerDependencies:
-      expo: '>=52.0.40'
-      react: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      expo:
-        optional: true
-
   '@react-native/assets-registry@0.81.4':
     resolution: {integrity: sha512-AMcDadefBIjD10BRqkWw+W/VdvXEomR6aEZ0fhQRAv7igrBzb4PTn4vHKYg+sUK0e3wa74kcMy2DLc/HtnGcMA==}
     engines: {node: '>= 20.19.4'}
@@ -2314,6 +2304,16 @@ packages:
     resolution: {integrity: sha512-2icttCy3OPTk/GWIFt+vwA+0hup53jnmYb7JKRbvNvrrOrz+WblzpeoiaOleI2dYG/vjwpNO8to8qVyKhYJtrQ==}
     peerDependencies:
       expo: '*'
+
+  expo-checkbox@5.0.7:
+    resolution: {integrity: sha512-oACH1MwJ5816ovT5bKQcaPr/5AAK3l+nlC9FxxAhtANXNBav+BjRJT1IqYTfp33b7+FMKx9ZkLmqJHfubolJrQ==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+      react-native-web: '*'
+    peerDependenciesMeta:
+      react-native-web:
+        optional: true
 
   expo-constants@18.0.9:
     resolution: {integrity: sha512-sqoXHAOGDcr+M9NlXzj1tGoZyd3zxYDy215W6E0Z0n8fgBaqce9FAYQE2bu5X4G629AYig5go7U6sQz7Pjcm8A==}
@@ -5817,13 +5817,6 @@ snapshots:
       react: 19.1.0
       react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0)
 
-  '@react-native-google-signin/google-signin@16.0.0(expo@54.0.10)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0)':
-    dependencies:
-      react: 19.1.0
-      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0)
-    optionalDependencies:
-      expo: 54.0.10(@babel/core@7.28.4)(@expo/metro-runtime@6.1.2)(expo-router@6.0.8)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0)
-
   '@react-native/assets-registry@0.81.4': {}
 
   '@react-native/babel-plugin-codegen@0.81.4(@babel/core@7.28.4)':
@@ -7237,6 +7230,13 @@ snapshots:
       ajv: 8.17.1
       expo: 54.0.10(@babel/core@7.28.4)(@expo/metro-runtime@6.1.2)(expo-router@6.0.8)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0)
       semver: 7.7.2
+
+  expo-checkbox@5.0.7(react-native-web@0.21.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0)
+    optionalDependencies:
+      react-native-web: 0.21.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   expo-constants@18.0.9(expo@54.0.10)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.0)):
     dependencies:
