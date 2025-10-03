@@ -2,14 +2,7 @@ import BottomNavigation from "@/components/ui/BottomNavigation";
 import { getImage } from "@/constants/Images";
 import DataService from "@/services/DataService";
 import React, { useEffect, useState } from "react";
-import {
-	FlatList,
-	Image,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function Favorites() {
 	const [savedItems, setSavedItems] = useState<any[]>([]);
@@ -23,7 +16,7 @@ export default function Favorites() {
 	}, []);
 
 	return (
-		<View style={styles.container}>
+		<>
 			<FlatList
 				data={savedItems}
 				keyExtractor={(item) => item.id.toString()}
@@ -86,12 +79,6 @@ export default function Favorites() {
 			/>
 
 			<BottomNavigation activeTab='favorites' />
-		</View>
+		</>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-});

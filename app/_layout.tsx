@@ -32,11 +32,20 @@ export default function RootLayout() {
 					options={{
 						headerShown: true,
 						title: "Favorites",
+						headerBackVisible: false,
 						headerTitleAlign: "center",
 					}}
 				/>
 
-				<Stack.Screen name='profile' options={{ headerShown: false }} />
+				<Stack.Screen
+					name='profile'
+					options={{
+						headerShown: true,
+						title: "Profile",
+						headerBackVisible: false,
+						headerTitleAlign: "center",
+					}}
+				/>
 				<Stack.Screen name='settings' options={{ headerShown: false }} />
 				<Stack.Screen name='create-listing' options={{ headerShown: false }} />
 				<Stack.Screen name='my-listings' options={{ headerShown: false }} />

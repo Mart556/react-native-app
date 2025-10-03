@@ -62,37 +62,48 @@ export default function ProductPage() {
 					<Image
 						source={getImage(productData?.image || "")}
 						style={styles.productImage}
-						resizeMode='contain'
+						resizeMode='cover'
 					/>
 				</View>
 
 				<View style={styles.detailsCard}>
 					<View style={styles.titleRow}>
 						<Text style={styles.productName}>{productData?.name}</Text>
-						<TouchableOpacity
-							style={styles.bookmarkButton}
-							onPress={handleBookmark}
-						>
-							<FontAwesomeIcon
-								icon={faBookmark}
-								size={24}
-								color={isBookmarked ? "#007AFF" : "#999"}
-							/>
-						</TouchableOpacity>
 					</View>
 
 					<Text style={styles.price}>{productData?.price}</Text>
 
 					<Text style={styles.description}>{productData?.description}</Text>
-
-					<TouchableOpacity
-						style={styles.contactButton}
-						onPress={handleContactSeller}
-					>
-						<Text style={styles.contactButtonText}>Contact Seller</Text>
-					</TouchableOpacity>
 				</View>
 			</ScrollView>
+
+			<View
+				style={{
+					flexDirection: "row",
+					justifyContent: "space-between",
+					marginTop: "auto",
+					marginBottom: 16,
+					paddingHorizontal: 20,
+				}}
+			>
+				<TouchableOpacity
+					style={styles.bookmarkButton}
+					onPress={handleBookmark}
+				>
+					<FontAwesomeIcon
+						icon={faBookmark}
+						size={24}
+						color={isBookmarked ? "#007AFF" : "#999"}
+					/>
+				</TouchableOpacity>
+
+				<TouchableOpacity
+					style={styles.contactButton}
+					onPress={handleContactSeller}
+				>
+					<Text style={styles.contactButtonText}>Contact Seller</Text>
+				</TouchableOpacity>
+			</View>
 		</View>
 	);
 }
@@ -112,7 +123,7 @@ const styles = StyleSheet.create({
 		width: 40,
 		height: 40,
 		backgroundColor: "#fff",
-		borderRadius: 20,
+		borderRadius: 8,
 		justifyContent: "center",
 		alignItems: "center",
 		shadowColor: "#000",
@@ -159,9 +170,6 @@ const styles = StyleSheet.create({
 		color: "#333",
 		flex: 1,
 	},
-	bookmarkButton: {
-		padding: 8,
-	},
 	price: {
 		fontSize: 32,
 		fontWeight: "700",
@@ -174,12 +182,20 @@ const styles = StyleSheet.create({
 		color: "#666",
 		marginBottom: 40,
 	},
+
+	bookmarkButton: {
+		padding: 10,
+		paddingHorizontal: 12,
+		backgroundColor: "#ccc",
+		justifyContent: "center",
+		borderRadius: 8,
+	},
 	contactButton: {
 		backgroundColor: "#007AFF",
 		paddingVertical: 18,
 		borderRadius: 12,
 		alignItems: "center",
-		marginTop: "auto",
+		width: "80%",
 	},
 	contactButtonText: {
 		color: "#fff",
