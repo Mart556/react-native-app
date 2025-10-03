@@ -1,8 +1,17 @@
 import BottomNavigation from "@/components/ui/BottomNavigation";
 import { getImage } from "@/constants/Images";
 import DataService from "@/services/DataService";
+import { FontAwesome } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import {
+	FlatList,
+	Image,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from "react-native";
 
 export default function Favorites() {
 	const [savedItems, setSavedItems] = useState<any[]>([]);
@@ -15,8 +24,20 @@ export default function Favorites() {
 		loadFavorites();
 	}, []);
 
+	const handleTabPress = (tab: "home" | "favorites" | "profile") => {
+		if (tab === "favorites") return;
+		if (tab === "profile") {
+			router.push("/profile");
+		} else {
+			router.push(`/${tab}` as any);
+		}
+	};
+
 	return (
-		<>
+		<View style={styles.container}>
+			<View style={styles.header}>
+				<Text style={styles.headerTitle}>Favorites</Text>
+			</View>
 			<FlatList
 				data={savedItems}
 				keyExtractor={(item) => item.id.toString()}
@@ -72,13 +93,60 @@ export default function Favorites() {
 					</View>
 				)}
 				ListEmptyComponent={
-					<Text style={{ padding: 20, textAlign: "center" }}>
-						No favorites saved.
-					</Text>
+					<View style={styles.emptyContainer}>
+						<FontAwesome name='star' size={50} color='#ccc' />
+						<Text style={styles.emptyTitle}>No favorites yet</Text>
+						<Text style={styles.emptySubtitle}>
+							Save items you like by tapping the bookmark icon
+						</Text>
+					</View>
 				}
 			/>
 
-			<BottomNavigation activeTab='favorites' />
-		</>
+			<BottomNavigation activeTab='favorites' onTabPress={handleTabPress} />
+		</View>
 	);
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
+	header: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center",
+		paddingHorizontal: 16,
+		paddingTop: 50,
+		paddingBottom: 16,
+		backgroundColor: "#fff",
+		borderBottomWidth: 1,
+		borderBottomColor: "#E5E5EA",
+	},
+
+	headerTitle: {
+		fontSize: 18,
+		fontWeight: "600",
+		color: "#000",
+	},
+
+	emptyContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		paddingTop: 100,
+	},
+	emptyTitle: {
+		fontSize: 18,
+		fontWeight: "600",
+		color: "#333",
+		marginTop: 16,
+		marginBottom: 8,
+	},
+	emptySubtitle: {
+		fontSize: 14,
+		color: "#666",
+		textAlign: "center",
+		paddingHorizontal: 40,
+	},
+});

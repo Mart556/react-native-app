@@ -30,20 +30,21 @@ export default function RootLayout() {
 				<Stack.Screen
 					name='favorites'
 					options={{
-						headerShown: true,
-						title: "Favorites",
-						headerBackVisible: false,
-						headerTitleAlign: "center",
+						headerShown: false,
+					}}
+				/>
+
+				<Stack.Screen
+					name='bookmark'
+					options={{
+						headerShown: false,
 					}}
 				/>
 
 				<Stack.Screen
 					name='profile'
 					options={{
-						headerShown: true,
-						title: "Profile",
-						headerBackVisible: false,
-						headerTitleAlign: "center",
+						headerShown: false,
 					}}
 				/>
 				<Stack.Screen name='settings' options={{ headerShown: false }} />
