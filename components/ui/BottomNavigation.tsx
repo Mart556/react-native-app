@@ -1,19 +1,20 @@
 import { faBookmark, faHome, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 interface BottomNavigationProps {
-	activeTab?: "home" | "bookmark" | "user";
-	onTabPress?: (tab: "home" | "bookmark" | "user") => void;
+	activeTab?: "home" | "favorites" | "profile";
+	onTabPress?: (tab: "home" | "favorites" | "profile") => void;
 }
 
 export default function BottomNavigation({
 	activeTab = "home",
-	onTabPress,
 }: BottomNavigationProps) {
-	const handleTabPress = (tab: "home" | "bookmark" | "user") => {
-		onTabPress?.(tab);
+	const handleTabPress = (tab: "home" | "favorites" | "profile") => {
+		if (tab === activeTab) return;
+		router.push(`/${tab}` as any);
 	};
 
 	return (
@@ -31,23 +32,23 @@ export default function BottomNavigation({
 
 			<TouchableOpacity
 				style={styles.navItem}
-				onPress={() => handleTabPress("bookmark")}
+				onPress={() => handleTabPress("favorites")}
 			>
 				<FontAwesomeIcon
 					icon={faBookmark}
 					size={24}
-					color={activeTab === "bookmark" ? "#007AFF" : "#999"}
+					color={activeTab === "favorites" ? "#007AFF" : "#999"}
 				/>
 			</TouchableOpacity>
 
 			<TouchableOpacity
 				style={styles.navItem}
-				onPress={() => handleTabPress("user")}
+				onPress={() => handleTabPress("profile")}
 			>
 				<FontAwesomeIcon
 					icon={faUser}
 					size={24}
-					color={activeTab === "user" ? "#007AFF" : "#999"}
+					color={activeTab === "profile" ? "#007AFF" : "#999"}
 				/>
 			</TouchableOpacity>
 		</View>

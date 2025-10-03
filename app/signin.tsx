@@ -1,10 +1,9 @@
 import AuthHeader from "@/components/ui/AuthHeader";
 import AuthInput from "@/components/ui/AuthInput";
 import GoogleButton from "@/components/ui/GoogleButton";
+import React, { useState } from "react";
 
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-import { useState } from "react";
 
 export default function SignInScreen() {
 	const [name, setName] = useState("");

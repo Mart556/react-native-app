@@ -1,14 +1,14 @@
 import SplashButton from "@/components/ui/SplashButton";
+import { Images } from "@/constants/Images";
 import { router } from "expo-router";
 import { Image, StyleSheet, Text, View } from "react-native";
+
+import React from "react";
 
 export default function SplashScreen() {
 	return (
 		<View style={styles.container}>
-			<Image
-				source={require("@/assets/images/splash.png")}
-				style={styles.image}
-			/>
+			<Image source={Images.splash} style={styles.image} />
 
 			<Text style={styles.title}>You`ll Find</Text>
 			<Text style={styles.subtitle}>All you need</Text>

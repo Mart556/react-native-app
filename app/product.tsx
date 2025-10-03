@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
+	Image,
 	ScrollView,
 	StyleSheet,
 	Text,
@@ -10,12 +11,13 @@ import {
 	View,
 } from "react-native";
 
-import DataService from "@/services/DataService";
+import { getImage } from "@/constants/Images";
+import DataService, { Product } from "@/services/DataService";
 
 export default function ProductPage() {
 	const { productId } = useLocalSearchParams();
 	const [isBookmarked, setIsBookmarked] = useState(false);
-	const [productData, setProductData] = useState(null);
+	const [productData, setProductData] = useState<Product | null>(null);
 
 	const handleBack = () => {
 		router.back();
@@ -23,6 +25,12 @@ export default function ProductPage() {
 
 	const handleBookmark = () => {
 		setIsBookmarked(!isBookmarked);
+
+		if (isBookmarked) {
+			DataService.removeFromFavorites(Number(productId) as number);
+		} else {
+			DataService.addToFavorites(Number(productId) as number);
+		}
 	};
 
 	const handleContactSeller = () => {
@@ -31,11 +39,11 @@ export default function ProductPage() {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const productData = await DataService.getProductById(
+			const product = await DataService.getProductById(
 				Number(productId) as number
 			);
 
-			setProductData(productData as any);
+			setProductData(product);
 		};
 
 		fetchData();
@@ -51,7 +59,11 @@ export default function ProductPage() {
 
 			<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
 				<View style={styles.imageContainer}>
-					{/* <Image source={""} style={styles.productImage} resizeMode='contain' /> */}
+					<Image
+						source={getImage(productData?.image || "")}
+						style={styles.productImage}
+						resizeMode='contain'
+					/>
 				</View>
 
 				<View style={styles.detailsCard}>
@@ -71,12 +83,7 @@ export default function ProductPage() {
 
 					<Text style={styles.price}>{productData?.price}</Text>
 
-					<Text style={styles.description}>
-						Minimal Stand is made of by natural wood. The design that is very
-						simple and minimal. This is truly one of the best furnitures in any
-						family for now. With 3 different colors, you can easily select the
-						best match for your home.
-					</Text>
+					<Text style={styles.description}>{productData?.description}</Text>
 
 					<TouchableOpacity
 						style={styles.contactButton}

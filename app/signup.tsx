@@ -6,7 +6,7 @@ import { Checkbox } from "expo-checkbox";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { router } from "expo-router";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export default function SignupScreen() {
 	const [name, setName] = useState("");

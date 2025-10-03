@@ -1,26 +1,30 @@
 [
 	{
 		"id": 1,
-		"name": "Black Simple Lamp",
+		"name": "Minimal Desk",
 		"price": "12.00€",
-		"image": "@/assets/images/splash.png"
+		"image": "@/assets/images/minimal-desk.png",
+		"description": "A sleek and modern desk for your home office."
 	},
 	{
 		"id": 2,
-		"name": "Minimal Stand",
+		"name": "Minimal Table",
 		"price": "25.00€",
-		"image": "@/assets/images/splash.png"
+		"image": "@/assets/images/minimal-tabel.png",
+		"description": "A minimal table for your living room or office."
 	},
 	{
 		"id": 3,
 		"name": "Coffee Chair",
 		"price": "20.00€",
-		"image": "@/assets/images/splash.png"
+		"image": "@/assets/images/coffe-chair.png",
+		"description": "A comfortable coffee chair perfect for your living room."
 	},
 	{
 		"id": 4,
-		"name": "Simple Desk",
+		"name": "Coffee Table",
 		"price": "50.00€",
-		"image": "@/assets/images/splash.png"
+		"image": "@/assets/images/coffe-table.png",
+		"description": "A sleek and modern coffee table for your living room."
 	}
 ]

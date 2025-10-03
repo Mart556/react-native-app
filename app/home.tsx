@@ -20,6 +20,7 @@ import {
 	View,
 } from "react-native";
 
+import { getImage } from "@/constants/Images";
 import { useCategories, useProducts } from "@/hooks/useData";
 import DataService, { Category, Product } from "@/services/DataService";
 
@@ -36,10 +37,6 @@ const getIconFromName = (iconName: string) => {
 		couch: faCouch,
 	};
 	return iconMap[actualIconName.toLowerCase()] || faStar; // Default to star if not found
-};
-
-const loadProductImage = (imageUrl: string) => {
-	return { uri: imageUrl };
 };
 
 export default function Home() {
@@ -66,11 +63,6 @@ export default function Home() {
 			);
 			setFilteredProducts(filtered);
 		}
-	};
-
-	const handleTabPress = (tab: "home" | "bookmark" | "user") => {
-		if (tab === "home") return;
-		router.push(`/${tab}` as any);
 	};
 
 	const openProductDetails = (productId: number) => {
@@ -124,9 +116,8 @@ export default function Home() {
 						>
 							<View style={styles.productImageContainer}>
 								<Image
-									source={loadProductImage(product.image)}
+									source={getImage(product.image)}
 									style={styles.productImage}
-									resizeMode='contain'
 								/>
 							</View>
 							<Text style={styles.productName}>{product.name}</Text>
@@ -136,7 +127,7 @@ export default function Home() {
 				</View>
 			</ScrollView>
 
-			<BottomNavigation activeTab='home' onTabPress={handleTabPress} />
+			<BottomNavigation activeTab='home' />
 		</View>
 	);
 }
@@ -217,7 +208,7 @@ const styles = StyleSheet.create({
 	productImage: {
 		width: 80,
 		height: 80,
-		resizeMode: "contain",
+		resizeMode: "cover",
 	},
 	productName: {
 		fontSize: 14,
