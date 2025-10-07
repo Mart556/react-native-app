@@ -1,4 +1,5 @@
 [
+	{ "id": 0, "name": "All", "icon": "fa-solid fa-boxes-stacked" },
 	{ "id": 1, "name": "Popular", "icon": "fa-solid fa-star" },
 	{ "id": 2, "name": "Chair", "icon": "fa-solid fa-chair" },
 	{ "id": 3, "name": "Table", "icon": "fa-solid fa-table" },

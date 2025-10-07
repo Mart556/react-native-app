@@ -1,6 +1,7 @@
 import BottomNavigation from "@/components/ui/BottomNavigation";
 import {
 	faBed,
+	faBoxesStacked,
 	faChair,
 	faCouch,
 	faSearch,
@@ -33,6 +34,7 @@ const getIconFromName = (iconName: string) => {
 		star: faStar,
 		chair: faChair,
 		table: faTable,
+		"boxes-stacked": faBoxesStacked,
 		bed: faBed,
 		couch: faCouch,
 	};
@@ -74,6 +76,18 @@ export default function Home() {
 		} as any);
 	};
 
+	const filterProductByCategory = (categoryName: string) => {
+		if (categoryName === "All") {
+			setFilteredProducts(products);
+			return;
+		}
+
+		const filtered = products.filter(
+			(product) => product.category === categoryName
+		);
+		setFilteredProducts(filtered);
+	};
+
 	return (
 		<View style={styles.container}>
 			<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -94,7 +108,11 @@ export default function Home() {
 
 				<View style={styles.categoriesContainer}>
 					{categories.map((category: Category) => (
-						<TouchableOpacity key={category.id} style={styles.categoryItem}>
+						<TouchableOpacity
+							key={category.id}
+							style={styles.categoryItem}
+							onPress={() => filterProductByCategory(category.name)}
+						>
 							<View style={styles.categoryIcon}>
 								<FontAwesomeIcon
 									icon={getIconFromName(category.icon)}

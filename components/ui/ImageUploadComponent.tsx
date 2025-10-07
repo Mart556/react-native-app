@@ -1,4 +1,5 @@
 import { getImage } from "@/constants/Images";
+import ImageUploadService from "@/services/ImageUploadService";
 import React, { useState } from "react";
 import {
 	ActivityIndicator,
@@ -9,7 +10,6 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
-// import ImageUploadService from '@/services/ImageUploadService'; // Uncomment after installing expo-image-picker
 
 interface ImageUploadComponentProps {
 	productId?: number;
@@ -26,44 +26,35 @@ export default function ImageUploadComponent({
 	const [uploading, setUploading] = useState(false);
 
 	const handleImageUpload = async () => {
-		// Uncomment this section after installing expo-image-picker
-		/*
-    try {
-      setUploading(true);
-      
-      if (productId) {
-        // Update existing product image
-        const result = await ImageUploadService.uploadProductImage(productId);
-        
-        if (result.success && result.imageUri) {
-          setImageUri(result.imageUri);
-          onImageUploaded?.(result.imageUri);
-          Alert.alert('Success', 'Image uploaded successfully!');
-        } else {
-          Alert.alert('Error', result.error || 'Failed to upload image');
-        }
-      } else {
-        // Just pick an image without saving to product
-        const result = await ImageUploadService.showImagePicker();
-        
-        if (result.success && result.imageUri) {
-          setImageUri(result.imageUri);
-          onImageUploaded?.(result.imageUri);
-        }
-      }
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      Alert.alert('Error', 'Failed to upload image');
-    } finally {
-      setUploading(false);
-    }
-    */
+		try {
+			setUploading(true);
 
-		// Temporary placeholder - remove after installing expo-image-picker
-		Alert.alert(
-			"Image Upload",
-			"Install expo-image-picker to enable image uploads.\n\nRun: pnpm add expo-image-picker"
-		);
+			if (productId) {
+				// Update existing product image
+				const result = await ImageUploadService.uploadProductImage(productId);
+
+				if (result.success && result.imageUri) {
+					setImageUri(result.imageUri);
+					onImageUploaded?.(result.imageUri);
+					Alert.alert("Success", "Image uploaded successfully!");
+				} else {
+					Alert.alert("Error", result.error || "Failed to upload image");
+				}
+			} else {
+				// Just pick an image without saving to product
+				const result = await ImageUploadService.showImagePicker();
+
+				if (result.success && result.imageUri) {
+					setImageUri(result.imageUri);
+					onImageUploaded?.(result.imageUri);
+				}
+			}
+		} catch (error) {
+			console.error("Error uploading image:", error);
+			Alert.alert("Error", "Failed to upload image");
+		} finally {
+			setUploading(false);
+		}
 	};
 
 	return (

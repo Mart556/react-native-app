@@ -14,6 +14,7 @@ export type Product = {
 	name: string;
 	price: string;
 	description: string;
+	category?: string;
 	image: any;
 	isFavorite?: boolean;
 };

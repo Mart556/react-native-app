@@ -1,9 +1,12 @@
 import BottomNavigation from "@/components/ui/BottomNavigation";
 import ListItem from "@/components/ui/ListItem";
+import UserService, { User } from "@/services/UserService";
 import { FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
+	Alert,
+	Image,
 	ScrollView,
 	StyleSheet,
 	Text,
@@ -12,6 +15,21 @@ import {
 } from "react-native";
 
 export default function Settings() {
+	const [user, setUser] = useState<User | null>(null);
+
+	useEffect(() => {
+		loadUser();
+	}, []);
+
+	const loadUser = async () => {
+		try {
+			const userData = await UserService.getUser();
+			setUser(userData);
+		} catch (error) {
+			console.error("Error loading user:", error);
+		}
+	};
+
 	const handleBack = () => {
 		router.back();
 	};
@@ -52,6 +70,29 @@ export default function Settings() {
 		console.log("Navigate to Privacy & Terms");
 	};
 
+	const handleLogout = () => {
+		Alert.alert("Logout", "Are you sure you want to logout?", [
+			{
+				text: "Cancel",
+				style: "cancel",
+			},
+			{
+				text: "Logout",
+				style: "destructive",
+				onPress: async () => {
+					try {
+						await UserService.logout();
+						Alert.alert("Success", "You have been logged out");
+						router.push("/signup");
+					} catch (error) {
+						console.error("Error logging out:", error);
+						Alert.alert("Error", "Failed to logout");
+					}
+				},
+			},
+		]);
+	};
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
@@ -65,8 +106,18 @@ export default function Settings() {
 			<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
 				<View style={styles.profileSection}>
 					<View style={styles.profileInfo}>
-						<Text style={styles.profileName}>Mart Haamer</Text>
-						<Text style={styles.profileEmail}>mart.haamer@voco.ee</Text>
+						{user?.avatar && (
+							<Image source={{ uri: user.avatar }} style={styles.avatar} />
+						)}
+						<Text style={styles.profileName}>
+							{user?.name || "Mart Haamer"}
+						</Text>
+						<Text style={styles.profileEmail}>
+							{user?.email || "mart.haamer@voco.ee"}
+						</Text>
+						{user?.username && (
+							<Text style={styles.username}>@{user.username}</Text>
+						)}
 					</View>
 				</View>
 
@@ -85,6 +136,17 @@ export default function Settings() {
 					<ListItem title='Contact Us' onPress={handleContact} />
 					<ListItem title='Privacy & Terms' onPress={handlePrivacy} />
 				</View>
+
+				{user?.isAuthenticated && (
+					<View style={styles.menuSection}>
+						<TouchableOpacity
+							style={styles.logoutButton}
+							onPress={handleLogout}
+						>
+							<Text style={styles.logoutButtonText}>Logout</Text>
+						</TouchableOpacity>
+					</View>
+				)}
 			</ScrollView>
 
 			<BottomNavigation activeTab='profile' onTabPress={handleTabPress} />
@@ -133,6 +195,13 @@ const styles = StyleSheet.create({
 		padding: 20,
 		alignItems: "center",
 	},
+	avatar: {
+		width: 80,
+		height: 80,
+		borderRadius: 40,
+		marginBottom: 12,
+		backgroundColor: "#e0e0e0",
+	},
 	profileName: {
 		fontSize: 24,
 		fontWeight: "bold",
@@ -143,8 +212,27 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		color: "#666",
 	},
+	username: {
+		fontSize: 14,
+		color: "#007AFF",
+		marginTop: 4,
+		fontWeight: "500",
+	},
 	menuSection: {
 		backgroundColor: "#fff",
 		marginBottom: 20,
+	},
+	logoutButton: {
+		backgroundColor: "#FF3B30",
+		marginHorizontal: 16,
+		marginVertical: 12,
+		paddingVertical: 14,
+		borderRadius: 8,
+		alignItems: "center",
+	},
+	logoutButtonText: {
+		color: "#fff",
+		fontSize: 16,
+		fontWeight: "600",
 	},
 });

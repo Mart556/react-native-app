@@ -1,6 +1,6 @@
 import AuthHeader from "@/components/ui/AuthHeader";
 import AuthInput from "@/components/ui/AuthInput";
-import GoogleButton from "@/components/ui/GoogleButton";
+import GitHubButton from "@/components/ui/GitHubButton";
 import React, { useState } from "react";
 
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -46,7 +46,7 @@ export default function SignInScreen() {
 			<View style={{ flex: 1, alignItems: "center", marginBottom: 30 }}>
 				<Text style={{ flex: 1 }}>Or sign in with</Text>
 
-				<GoogleButton />
+				<GitHubButton />
 
 				<Text style={{ flex: 1 }}>Dont have an account? Sign up</Text>
 			</View>

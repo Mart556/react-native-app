@@ -1,6 +1,6 @@
 import AuthHeader from "@/components/ui/AuthHeader";
 import AuthInput from "@/components/ui/AuthInput";
-import GoogleButton from "@/components/ui/GoogleButton";
+import GitHubButton from "@/components/ui/GitHubButton";
 import { Checkbox } from "expo-checkbox";
 
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -71,7 +71,7 @@ export default function SignupScreen() {
 			<View style={{ flex: 1, alignItems: "center", marginBottom: 30 }}>
 				<Text style={{ flex: 1 }}>Or sign up with</Text>
 
-				<GoogleButton />
+				<GitHubButton />
 
 				<Text style={{ flex: 1 }}>Already have an account? Sign in</Text>
 			</View>

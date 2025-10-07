@@ -1,11 +1,12 @@
 import BottomNavigation from "@/components/ui/BottomNavigation";
 import ImageUploadComponent from "@/components/ui/ImageUploadComponent";
-import DataService from "@/services/DataService";
+import DataService, { Category } from "@/services/DataService";
 import { FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Alert,
+	Modal,
 	ScrollView,
 	StyleSheet,
 	Text,
@@ -21,6 +22,26 @@ export default function CreateListing() {
 	const [description, setDescription] = useState("");
 	const [imageUri, setImageUri] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [categories, setCategories] = useState<Category[]>([]);
+	const [showCategoryModal, setShowCategoryModal] = useState(false);
+
+	useEffect(() => {
+		loadCategories();
+	}, []);
+
+	const loadCategories = async () => {
+		try {
+			const cats = await DataService.getCategories();
+			setCategories(cats);
+		} catch (error) {
+			console.error("Error loading categories:", error);
+		}
+	};
+
+	const handleCategorySelect = (selectedCategory: string) => {
+		setCategory(selectedCategory);
+		setShowCategoryModal(false);
+	};
 
 	const handleBack = () => {
 		router.back();
@@ -35,7 +56,12 @@ export default function CreateListing() {
 	};
 
 	const handleSubmit = async () => {
-		if (!title.trim() || !price.trim() || !description.trim()) {
+		if (
+			!title.trim() ||
+			!category.trim() ||
+			!price.trim() ||
+			!description.trim()
+		) {
 			Alert.alert("Error", "Please fill in all required fields");
 			return;
 		}
@@ -45,8 +71,9 @@ export default function CreateListing() {
 
 			await DataService.addProduct({
 				name: title.trim(),
-				price: price.trim(),
+				price: `${price.trim()} €`,
 				description: description.trim(),
+				category: category.trim(),
 				image: imageUri || "@/assets/images/splash.png",
 			});
 
@@ -93,13 +120,17 @@ export default function CreateListing() {
 
 				<View style={styles.section}>
 					<Text style={styles.label}>Category</Text>
-					<TextInput
+					<TouchableOpacity
 						style={styles.input}
-						value={category}
-						onChangeText={setCategory}
-						placeholder='Select category'
-						placeholderTextColor='#999'
-					/>
+						onPress={() => setShowCategoryModal(true)}
+					>
+						<Text
+							style={[styles.categoryText, !category && styles.placeholderText]}
+						>
+							{category || "Select category"}
+						</Text>
+						<FontAwesome name='chevron-down' size={16} color='#999' />
+					</TouchableOpacity>
 				</View>
 
 				<View style={styles.section}>
@@ -128,16 +159,53 @@ export default function CreateListing() {
 					/>
 				</View>
 
-				<TouchableOpacity
-					style={[styles.submitButton, loading && styles.submitButtonDisabled]}
-					onPress={handleSubmit}
-					disabled={loading}
-				>
-					<Text style={styles.submitButtonText}>
-						{loading ? "Creating..." : "Submit"}
-					</Text>
-				</TouchableOpacity>
+				<View style={{ ...styles.section, marginBottom: 100 }}>
+					<TouchableOpacity
+						style={[
+							styles.submitButton,
+							loading && styles.submitButtonDisabled,
+						]}
+						onPress={handleSubmit}
+						disabled={loading}
+					>
+						<Text style={styles.submitButtonText}>
+							{loading ? "Creating..." : "Submit"}
+						</Text>
+					</TouchableOpacity>
+				</View>
 			</ScrollView>
+
+			<Modal
+				visible={showCategoryModal}
+				animationType='slide'
+				transparent={true}
+				onRequestClose={() => setShowCategoryModal(false)}
+			>
+				<View style={styles.modalOverlay}>
+					<View style={styles.modalContent}>
+						<View style={styles.modalHeader}>
+							<Text style={styles.modalTitle}>Select Category</Text>
+							<TouchableOpacity
+								onPress={() => setShowCategoryModal(false)}
+								style={styles.closeButton}
+							>
+								<FontAwesome name='times' size={20} color='#000' />
+							</TouchableOpacity>
+						</View>
+						<ScrollView style={styles.modalScrollView}>
+							{categories.map((cat) => (
+								<TouchableOpacity
+									key={cat.id}
+									style={styles.categoryOption}
+									onPress={() => handleCategorySelect(cat.name)}
+								>
+									<Text style={styles.categoryOptionText}>{cat.name}</Text>
+								</TouchableOpacity>
+							))}
+						</ScrollView>
+					</View>
+				</View>
+			</Modal>
 
 			<BottomNavigation activeTab='home' onTabPress={handleTabPress} />
 		</View>
@@ -204,12 +272,24 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		backgroundColor: "#fff",
 		color: "#000",
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+	},
+	categoryText: {
+		flex: 1,
+		fontSize: 16,
+		color: "#000",
+	},
+	placeholderText: {
+		color: "#999",
 	},
 	textArea: {
 		height: 100,
 		textAlignVertical: "top",
 	},
 	submitButton: {
+		flex: 1,
 		backgroundColor: "#007AFF",
 		marginHorizontal: 16,
 		marginTop: 20,
@@ -224,5 +304,46 @@ const styles = StyleSheet.create({
 		color: "#fff",
 		fontSize: 16,
 		fontWeight: "600",
+	},
+	modalOverlay: {
+		flex: 1,
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+		justifyContent: "flex-end",
+	},
+	modalContent: {
+		backgroundColor: "#fff",
+		borderTopLeftRadius: 20,
+		borderTopRightRadius: 20,
+		maxHeight: "70%",
+	},
+	modalHeader: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		paddingHorizontal: 20,
+		paddingVertical: 16,
+		borderBottomWidth: 1,
+		borderBottomColor: "#E5E5EA",
+	},
+	modalTitle: {
+		fontSize: 18,
+		fontWeight: "600",
+		color: "#000",
+	},
+	closeButton: {
+		padding: 8,
+	},
+	modalScrollView: {
+		maxHeight: 300,
+	},
+	categoryOption: {
+		paddingHorizontal: 20,
+		paddingVertical: 16,
+		borderBottomWidth: 1,
+		borderBottomColor: "#F0F0F0",
+	},
+	categoryOptionText: {
+		fontSize: 16,
+		color: "#000",
 	},
 });
