@@ -2,8 +2,8 @@ import BottomNavigation from "@/components/ui/BottomNavigation";
 import ListItem from "@/components/ui/ListItem";
 import UserService, { User } from "@/services/UserService";
 import { FontAwesome } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import React, { useCallback, useState } from "react";
 import {
 	Alert,
 	Image,
@@ -17,13 +17,17 @@ import {
 export default function Settings() {
 	const [user, setUser] = useState<User | null>(null);
 
-	useEffect(() => {
-		loadUser();
-	}, []);
+	useFocusEffect(
+		useCallback(() => {
+			loadUser();
+		}, [])
+	);
 
 	const loadUser = async () => {
 		try {
+			console.log("Settings: Loading user data...");
 			const userData = await UserService.getUser();
+			console.log("Settings: User data loaded:", userData);
 			setUser(userData);
 		} catch (error) {
 			console.error("Error loading user:", error);

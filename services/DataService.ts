@@ -41,7 +41,8 @@ class DataService {
 
 	async initializeData(): Promise<void> {
 		try {
-			await AsyncStorage.clear();
+			// Don't clear everything - only initialize missing data
+			// await AsyncStorage.clear(); // REMOVED: This was deleting user data!
 
 			const existingProducts = await AsyncStorage.getItem(this.productsKey);
 			const existingCategories = await AsyncStorage.getItem(this.categoriesKey);
@@ -64,7 +65,6 @@ class DataService {
 		}
 	}
 
-	// Get all categories
 	async getCategories(): Promise<Category[]> {
 		try {
 			const data = await AsyncStorage.getItem(this.categoriesKey);
@@ -75,25 +75,13 @@ class DataService {
 		}
 	}
 
-	// Get all products
 	async getProducts(): Promise<Product[]> {
 		try {
 			const data = await AsyncStorage.getItem(this.productsKey);
 			const favorites = await this.getFavorites();
-			const storedProducts: Product[] = data ? JSON.parse(data) : [];
+			const allProducts = data ? JSON.parse(data) : productsData;
 
-			const mergedWithDefaults = productsData.map((def) => {
-				const stored = storedProducts.find((p) => p.id === def.id);
-				return { ...def, ...(stored || {}) };
-			});
-
-			const extras = storedProducts.filter(
-				(sp) => !productsData.some((dp) => dp.id === sp.id)
-			);
-
-			const allProducts = [...mergedWithDefaults, ...extras];
-
-			return allProducts.map((product) => ({
+			return allProducts.map((product: Product) => ({
 				...product,
 				isFavorite: favorites.some((fav) => fav.productId === product.id),
 			}));
@@ -103,7 +91,6 @@ class DataService {
 		}
 	}
 
-	// Get favorite products
 	async getFavorites(): Promise<Favorite[]> {
 		try {
 			const data = await AsyncStorage.getItem(this.favoritesKey);
@@ -114,7 +101,6 @@ class DataService {
 		}
 	}
 
-	// Add product to favorites
 	async addToFavorites(productId: number): Promise<void> {
 		try {
 			const favorites = await this.getFavorites();
@@ -138,7 +124,6 @@ class DataService {
 		}
 	}
 
-	// Remove product from favorites
 	async removeFromFavorites(productId: number): Promise<void> {
 		try {
 			const favorites = await this.getFavorites();
@@ -154,7 +139,6 @@ class DataService {
 		}
 	}
 
-	// Get favorite products
 	async getFavoriteProducts(): Promise<Product[]> {
 		try {
 			const allProducts = await this.getProducts();
@@ -165,7 +149,6 @@ class DataService {
 		}
 	}
 
-	// Search products
 	async searchProducts(query: string): Promise<Product[]> {
 		try {
 			const allProducts = await this.getProducts();
@@ -178,7 +161,6 @@ class DataService {
 		}
 	}
 
-	// Add new product (for admin features)
 	async addProduct(product: Omit<Product, "id">): Promise<Product> {
 		try {
 			const products = await this.getProducts();
@@ -193,7 +175,6 @@ class DataService {
 		}
 	}
 
-	// Update existing product
 	async updateProduct(
 		productId: number,
 		updates: Partial<Product>
@@ -211,17 +192,16 @@ class DataService {
 		}
 	}
 
-	// Delete product
 	async deleteProduct(productId: number): Promise<void> {
 		try {
 			const products = await this.getProducts();
 			const filteredProducts = products.filter((p) => p.id !== productId);
+			console.log(filteredProducts);
 			await AsyncStorage.setItem(
 				this.productsKey,
 				JSON.stringify(filteredProducts)
 			);
 
-			// Also remove from favorites
 			await this.removeFromFavorites(productId);
 		} catch (error) {
 			console.error("Error deleting product:", error);
@@ -229,7 +209,6 @@ class DataService {
 		}
 	}
 
-	// Image management methods
 	async updateProductImage(productId: number, imageUri: string): Promise<void> {
 		try {
 			await this.updateProduct(productId, { image: imageUri });
@@ -239,7 +218,6 @@ class DataService {
 		}
 	}
 
-	// Store uploaded image reference (for future cloud storage integration)
 	async storeImageReference(imageId: string, imageUri: string): Promise<void> {
 		try {
 			const imageRefsKey = "app_image_references";
@@ -252,7 +230,6 @@ class DataService {
 		}
 	}
 
-	// Get image reference
 	async getImageReference(imageId: string): Promise<string | null> {
 		try {
 			const imageRefsKey = "app_image_references";

@@ -11,28 +11,17 @@
 		"ios": {
 			"supportsTablet": true
 		},
+
 		"android": {
 			"adaptiveIcon": {
 				"backgroundColor": "#E6F4FE"
-			},
-			"edgeToEdgeEnabled": true,
-			"predictiveBackGestureEnabled": false
+			}
 		},
 		"web": {
 			"output": "static",
 			"bundler": "metro"
 		},
-		"plugins": [
-			"expo-router",
-			[
-				"expo-build-properties",
-				{
-					"android": {
-						"usesCleartextTraffic": true
-					}
-				}
-			]
-		],
+
 		"experiments": {
 			"typedRoutes": true,
 			"reactCompiler": true

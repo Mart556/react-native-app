@@ -3,7 +3,7 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import * as AuthSession from "expo-auth-session";
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 
 const discovery = {
@@ -14,9 +14,11 @@ const discovery = {
 
 export default function GitHubButton() {
 	const [loading, setLoading] = useState(false);
+	const isAuthenticating = useRef(false);
 
-	// Use Expo's auth session for GitHub authentication
-	const redirectUri = AuthSession.makeRedirectUri();
+	const redirectUri = AuthSession.makeRedirectUri({
+		scheme: "reactnativeapp",
+	});
 
 	const [request, response, promptAsync] = AuthSession.useAuthRequest(
 		{
@@ -24,21 +26,18 @@ export default function GitHubButton() {
 				process.env.EXPO_PUBLIC_GITHUB_CLIENT_ID || "YOUR_GITHUB_CLIENT_ID",
 			scopes: ["user", "user:email"],
 			redirectUri,
-			usePKCE: false, // Disable PKCE since we're using client secret
+			usePKCE: false,
 		},
 		discovery
 	);
 
-	// Handle authentication response
 	useEffect(() => {
-		// Exchange authorization code for access token
 		const exchangeCodeForToken = async (code: string) => {
 			try {
 				if (!request) {
 					throw new Error("Request not initialized");
 				}
 
-				// Since we disabled PKCE, we can use exchangeCodeAsync without code_verifier
 				const tokenResponse = await AuthSession.exchangeCodeAsync(
 					{
 						clientId:
@@ -58,36 +57,48 @@ export default function GitHubButton() {
 			}
 		};
 
-		// Fetch user data and save to local storage
 		const authenticateUser = async (code: string) => {
 			try {
 				setLoading(true);
 
-				// Step 1: Exchange code for access token
 				const accessToken = await exchangeCodeForToken(code);
 
-				// Step 2: Fetch GitHub user data
 				const githubUser = await UserService.fetchGitHubUser(accessToken);
 
-				// Step 3: Convert and save user data
 				const user = UserService.convertGitHubUser(githubUser);
 				await UserService.saveUser(user);
 
-				// Step 4: Navigate to home
+				// Wait a bit to ensure AsyncStorage has persisted
+				await new Promise((resolve) => setTimeout(resolve, 500));
+
+				// Verify the data was saved
+				const savedUser = await UserService.getUser();
+				console.log("Verification - User retrieved after save:", savedUser);
+
+				if (!savedUser) {
+					throw new Error("Failed to save user data");
+				}
+
 				Alert.alert("Success", `Welcome ${user.name}!`);
-				router.push("/home");
+
+				// Additional delay before navigation
+				await new Promise((resolve) => setTimeout(resolve, 200));
+
+				router.replace("/home");
 			} catch (error) {
 				console.error("Authentication error:", error);
 				Alert.alert(
 					"Error",
 					"Failed to authenticate. Please try again or contact support."
 				);
+				isAuthenticating.current = false;
 			} finally {
 				setLoading(false);
 			}
 		};
 
-		if (response?.type === "success") {
+		if (response?.type === "success" && !isAuthenticating.current) {
+			isAuthenticating.current = true;
 			const { code } = response.params;
 			console.log("GitHub Auth Success - Authorization Code received");
 			authenticateUser(code);

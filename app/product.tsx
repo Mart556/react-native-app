@@ -84,6 +84,7 @@ export default function ProductPage() {
 					marginTop: "auto",
 					marginBottom: 16,
 					paddingHorizontal: 20,
+					backgroundColor: "#fff",
 				}}
 			>
 				<TouchableOpacity
