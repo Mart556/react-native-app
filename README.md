@@ -1,50 +1,69 @@
-# Welcome to your Expo app 👋
+# React Native Marketplace App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A comprehensive mobile marketplace application built with **React Native** and **Expo**. This project utilizes **Expo Router** for navigation and features a modern, responsive UI.
 
-## Get started
+## 🚀 Features
 
-1. Install dependencies
+- **Authentication**: Secure Sign In and Sign Up flows.
+- **Listings Management**: Create, view, and manage product listings.
+- **Favorites**: Bookmark and save favorite items.
+- **Profile**: User profile management and settings.
+- **Image Upload**: Functionality to upload images for listings.
+- **Theming**: Support for light and dark modes.
+- **Responsive UI**: Built with modern components and animations using `react-native-reanimated`.
+
+## 🛠 Tech Stack
+
+- **Framework**: [React Native](https://reactnative.dev/) & [Expo](https://expo.dev/) (SDK 54)
+- **Navigation**: [Expo Router](https://docs.expo.dev/router/introduction/)
+- **Language**: TypeScript
+- **Styling**: Custom UI components & Theming
+- **State/Data**: Custom hooks (`useData`, `useThemeColor`)
+- **Icons**: FontAwesome & Expo Vector Icons
+
+## 🏁 Getting Started
+
+### Prerequisites
+
+- Node.js
+- [pnpm](https://pnpm.io/) (recommended) or npm/yarn
+
+### Installation
+
+1. **Clone the repository**
 
    ```bash
-   npm install
+   git clone <repository-url>
+   cd react-native-app
    ```
 
-2. Start the app
+2. **Install dependencies**
 
    ```bash
-   npx expo start
+   pnpm install
    ```
 
-In the output, you'll find options to open the app in a
+3. **Start the application**
+   ```bash
+   pnpm start
+   ```
+   This will start the Expo development server. You can run the app on:
+   - **Android**: Press `a` (requires Android Studio/Emulator or Expo Go)
+   - **iOS**: Press `i` (requires Xcode/Simulator or Expo Go)
+   - **Web**: Press `w`
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 📂 Project Structure
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+app/                # Expo Router screens and layout
+assets/             # Static assets (images, JSON data)
+components/         # Reusable UI components
+constants/          # App constants (Colors, Images)
+hooks/              # Custom React hooks
+services/           # API and Logic services
+scripts/            # Utility scripts
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📄 License
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is open source and available under the [MIT License](LICENSE).

@@ -200,7 +200,7 @@ class DataService {
 		try {
 			const products = await this.getProducts();
 			const filteredProducts = products.filter((p) => p.id !== productId);
-			console.log(filteredProducts);
+
 			await AsyncStorage.setItem(
 				this.productsKey,
 				JSON.stringify(filteredProducts)

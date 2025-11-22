@@ -25,9 +25,8 @@ export default function Profile() {
 
 	const loadUser = async () => {
 		try {
-			console.log("Profile: Loading user data...");
 			const userData = await UserService.getUser();
-			console.log("Profile: User data loaded:", userData);
+
 			setUser(userData);
 		} catch (error) {
 			console.error("Error loading user:", error);
@@ -64,8 +63,6 @@ export default function Profile() {
 			},
 		]);
 	};
-
-	console.log("User data:", user);
 
 	return (
 		<View style={styles.container}>
