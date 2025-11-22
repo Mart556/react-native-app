@@ -1,6 +1,7 @@
 import AuthHeader from "@/components/ui/AuthHeader";
 import AuthInput from "@/components/ui/AuthInput";
 import GitHubButton from "@/components/ui/GitHubButton";
+import { router } from "expo-router";
 import React, { useState } from "react";
 
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -14,8 +15,8 @@ export default function SignInScreen() {
 			Alert.alert("Validation", "Please fill all fields");
 			return;
 		}
-		// Replace with real submit logic
-		Alert.alert("Success", `Account created for ${name}`);
+
+		router.push("/home");
 	};
 
 	return (

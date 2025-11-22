@@ -63,7 +63,7 @@ export default function Favorites() {
 						/>
 
 						<View style={{ flexDirection: "column", marginLeft: 10 }}>
-							<Text style={{ fontSize: 18 }}>{item.name}</Text>
+							<Text style={{ fontSize: 18, maxWidth: 200 }}>{item.name}</Text>
 							<Text style={{ color: "#000", fontWeight: "bold" }}>
 								${item.price}
 							</Text>

@@ -1,4 +1,4 @@
-import SplashButton from "@/components/ui/SplashButton";
+import SplashButton from "@/components/ui/splashbutton";
 import { Images } from "@/constants/Images";
 import { router } from "expo-router";
 import { Image, StyleSheet, Text, View } from "react-native";

@@ -1,6 +1,6 @@
 import BottomNavigation from "@/components/ui/BottomNavigation";
 import ListItem from "@/components/ui/ListItem";
-import SplashButton from "@/components/ui/SplashButton";
+import SplashButton from "@/components/ui/splashbutton";
 import UserService, { User } from "@/services/UserService";
 import { router, useFocusEffect } from "expo-router";
 import React, { useCallback, useState } from "react";

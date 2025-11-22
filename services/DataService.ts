@@ -15,14 +15,14 @@ export type Product = {
 	price: string;
 	description: string;
 	category?: string;
-	image: any;
+	image: string;
 	isFavorite?: boolean;
 };
 
 export type Favorite = {
 	productId: number;
 	name: string;
-	image: any;
+	image: string;
 	price: string;
 };
 
@@ -41,18 +41,22 @@ class DataService {
 
 	async initializeData(): Promise<void> {
 		try {
-			// Don't clear everything - only initialize missing data
-			// await AsyncStorage.clear(); // REMOVED: This was deleting user data!
+			fetch("https://fakestoreapi.com/products")
+				.then((response) => response.json())
+				.then((data) => {
+					data = data.map((item: any) => ({
+						id: item.id,
+						name: item.title,
+						price: item.price,
+						description: item.description,
+						category: item.category,
+						image: item.image,
+					}));
 
-			const existingProducts = await AsyncStorage.getItem(this.productsKey);
+					AsyncStorage.setItem(this.productsKey, JSON.stringify(data));
+				});
+
 			const existingCategories = await AsyncStorage.getItem(this.categoriesKey);
-
-			if (!existingProducts) {
-				await AsyncStorage.setItem(
-					this.productsKey,
-					JSON.stringify(productsData)
-				);
-			}
 
 			if (!existingCategories) {
 				await AsyncStorage.setItem(
