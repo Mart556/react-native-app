@@ -10,7 +10,7 @@ import "react-native-reanimated";
 import React from "react";
 
 export const unstable_settings = {
-	initialRouteName: "splashscreen",
+	initialRouteName: "index",
 };
 
 export default function RootLayout() {
@@ -21,7 +21,7 @@ export default function RootLayout() {
 	return (
 		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
 			<Stack>
-				<Stack.Screen name='splashscreen' options={{ headerShown: false }} />
+				<Stack.Screen name='index' options={{ headerShown: false }} />
 				<Stack.Screen name='signup' options={{ headerShown: false }} />
 				<Stack.Screen name='signin' options={{ headerShown: false }} />
 				<Stack.Screen name='home' options={{ headerShown: false }} />
@@ -50,6 +50,14 @@ export default function RootLayout() {
 				<Stack.Screen name='settings' options={{ headerShown: false }} />
 				<Stack.Screen name='create-listing' options={{ headerShown: false }} />
 				<Stack.Screen name='my-listings' options={{ headerShown: false }} />
+
+				<Stack.Screen
+					name='[...missing]'
+					options={{
+						title: 'Not Found',
+						headerShown: false,
+					}}
+				/>
 			</Stack>
 			<StatusBar style='auto' />
 		</ThemeProvider>
