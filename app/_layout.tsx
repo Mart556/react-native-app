@@ -54,7 +54,7 @@ export default function RootLayout() {
 				<Stack.Screen
 					name='[...missing]'
 					options={{
-						title: 'Not Found',
+						title: "Not Found",
 						headerShown: false,
 					}}
 				/>
