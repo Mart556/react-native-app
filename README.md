@@ -37,15 +37,23 @@ A comprehensive mobile marketplace application built with **React Native** and *
    cd react-native-app
    ```
 
+   **NB!**
+
+   Install `pnpm` globally
+
+   ```
+   npm install -g pnpm
+   ```
+
 2. **Install dependencies**
 
    ```bash
-   pnpm install
+   pnpm install or pnpx expo start
    ```
 
 3. **Start the application**
    ```bash
-   pnpm start
+   pnpm start or pnpm expo start
    ```
    This will start the Expo development server. You can run the app on:
    - **Android**: Press `a` (requires Android Studio/Emulator or Expo Go)
